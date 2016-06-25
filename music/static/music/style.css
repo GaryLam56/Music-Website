@@ -1,0 +1,66 @@
+body {
+    background: white url("images/background.png");
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+
+ul.errorlist {
+    padding-left: 0;
+}
+
+ul.errorlist > li {
+    list-style: none;
+}
+
+.navbar {
+    border-radius: 0;
+}
+
+.navbar-brand {
+    font-family: 'Satisfy', cursive;
+}
+
+.glyphicon-star {
+    color: #CCCCCC;
+    font-size: 16px;
+}
+
+.glyphicon-star.active {
+    color: #FDB230;
+}
+
+
+ .footer {
+
+    height:45px; /* Replace with the height your footer should be */
+    width: 100%; /* Don't change */
+    background-image: none;
+    background-color: #f5f5f5;
+    background-repeat: repeat;
+    background-attachment: scroll;
+    background-position: 0% 0%;
+    position: fixed;
+    bottom: 0pt;
+    left: 0pt;
+
+}   
+
+.footer_contents {
+
+        height:45px; /* Replace with the height your footer should be */
+        width: 100%; /* Visible width of footer */
+        margin:auto;
+
+}
+
+.post-content { /* This is for the text to appear on top of the folder image */
+    top:30%;
+    left:0;
+    position: absolute;
+	width:100%;
+}
+
+.thumbnail {
+	border: 3px solid black; 
+	border-radius=5px
+}

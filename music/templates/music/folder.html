@@ -1,0 +1,91 @@
+{% extends 'music/base.html' %}
+{% block title %}{{ folder }}{% endblock%}
+{% block folders_active %}active{% endblock %}
+ 
+{% block body %}
+<div class="container-fluid songs-container">
+<!-- Displays the name of the folder in the top center -->
+<h1 align="center" style="color: white;">{{ folder }}</h1>
+	<!-- Top bar that displays the options -->
+	<div class="row">
+		<div class="col-sm-12">
+			<ul class="nav nav-pills" style="margin-bottom: 10px;">
+				<li role="presentation" class="active">
+					<a href="{% url 'music:folder' folder.id %}">View All</a>
+				</li>
+				<li role="presentation">
+					<a href="{% url 'music:upload_song_folder' folder.id %}">Upload songs</a>
+				</li>
+				<form action="{% url 'music:delete_folder' folder.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+	                <button type="submit" class="btn btn-danger btn pull-right">
+	                	<span class="glyphicon glyphicon-remove"></span>&nbsp; Delete Folder
+                	</button>
+                </form>
+			</ul>
+		</div>
+	</div>
+	<!-- Division for the songs panel -->
+	<div class="row">
+		<div class="col-sm-12">
+			<div class=panel panel-default>
+				<div class="panel-body">
+				<h3>All Songs</h3>
+					<!-- Start of the table -->
+                    <table class="table">
+                    	<thead>
+                    		<!-- The values of the table -->
+                            <tr>
+                                <th>Song Title</th>
+                                <th>Artist</th>
+                                <th>Audio File</th>
+                                <th>Favorite</th>
+                                <th>Actions</th>
+                            </tr>
+                            <tbody>
+                            <!-- For every song in the folder -->
+                            {% for song in folder.song_set.all %}
+                                <tr>
+                                	<!-- Print out the song title -->
+                                    <td>{{ song.song_title }}</td>
+                                    <!-- Prints out the artist -->
+                                    <td>
+                                    <!-- Some javascript(?) that updates the artist -->
+                                    </td>
+                                    <!-- Prints out the play button and allows playback -->
+                                    <td>
+                                        <a target="_blank" href="{{ song.audio_file.url }}">
+                                            <button type="button" class="btn btn-success btn-xs">
+                                                <span class="glyphicon glyphicon-play"></span>&nbsp; Play
+                                            </button>
+                                        </a>
+                                    </td>
+                                    <!-- Prints out the favorite button -->
+                                    <td>
+                                        <a href="{% url 'music:favorite' song.id %}" class="btn-favorite"><span class="glyphicon glyphicon-star {% if song.is_favorite %}active{% endif %}"></span></a>
+                                    </td>
+                                    <!-- Delete Song -->
+                                    <td>
+                                    <form action="{% url 'music:delete_song' song.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="song_id" value="{{ song.id }}" />
+                                        <button type="submit" class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
+                                        </button>
+                                    </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            <!-- End of table rows -->
+                           </tbody>
+                           <!-- End of table body -->
+                        </thead>
+                    </table>
+                    <!-- End of table -->
+            	</div>
+            </div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

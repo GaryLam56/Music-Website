@@ -1,0 +1,40 @@
+{% extends 'music/base.html' %}
+{% block folders_active %}active{% endblock %}
+{% block title %}Folders{% endblock %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="albums-container container-fluid">
+	<div class="row">
+        <div class="col-sm-12">
+            <h3 style="color:white;">{{ user.username }}'s Folders</h3>
+        </div>
+        <!-- If there are folders -->
+        {% if folders %}
+        	<!-- Prints out every folder -->
+            {% for folder in folders %}
+            <div class="col-sm-4 col-lg-2">
+                    <div class="thumbnail">
+                        <a href="{% url 'music:folder' folder.id %}">
+                             <img src="{% static 'folder.png' %}" class="img-responsive" type="image/png"/>                
+                             <div class="caption post-content" align:"center">
+                             	<h2 style="color:black" align="center">{{ folder.name }}</h2>
+                             </div>
+                        </a>
+         			</div>
+         	</div>
+         	{% endfor %}
+         <!-- If there are no folders -->
+         {% else %}
+            <div class="col-sm-12">
+                <br>
+                <a href="{% url 'music:create_folder' %}">
+                    <button type="button" class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp; Add a Folder
+                    </button>
+                </a>
+            </div>
+		{% endif %}
+	</div>
+</div>             
+{% endblock %}

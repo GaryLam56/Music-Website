@@ -1,0 +1,107 @@
+{% extends 'music/base.html' %}
+{% block title %}{{ album }}{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid songs-container">
+
+    <div class="row">
+
+        <!-- Left Album Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{% url 'music:album' album.id %}">
+                        {% if album.album_logo %}
+                            <img src="{{ album.album_logo.url }}" class="img-responsive">
+                        {% else %}
+                            <h3>No image to display</h3>
+                        {% endif %}
+                    </a>
+                    <h1>{{ album.album_title }} <small>{{ album.genre }}</small></h1>
+                    <h2>{{ album.artist }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Song Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" class="active"><a href="{% url 'music:album' album.id %}">View All</a></li>
+                <li role="presentation"><a href="{% url 'music:upload_song_album' album.id %}">Upload Songs</a></li>
+                <!-- the action url is where to send the form-data when the form is submitted -->
+                <form action="{% url 'music:delete_album' album.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+	                <button type="submit" class="btn btn-danger btn pull-right">
+	                	<span class="glyphicon glyphicon-remove"></span>&nbsp; Delete Album
+                	</button>
+                </form>
+            </ul>
+
+			<!-- Start the song panel -->
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>All Songs</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+					<!-- Start of the table -->
+                    <table class="table">
+                    	<!-- Table values -->
+                        <thead>
+                        <tr>
+                            <th>Song Title</th>
+                            <th>Artist</th>
+                            <th>Audio File</th>
+                            <th>Favorite</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <!-- Body of the table -->
+                        <tbody>
+                        <!-- For all songs in the album -->
+                        {% for song in album.song_set.all %}
+                            <tr>
+                            	<!-- Displays the song title -->
+                                <td>{{ song.song_title }}</td>
+                                <!-- Displays the Album -->
+                                <td>{{ album.artist }}</td>
+                                <!-- Displays the play button -->
+                                <td>
+                                    <a target="_blank" href="{{ song.audio_file.url }}">
+                                        <button type="button" class="btn btn-success btn-xs">
+                                            <span class="glyphicon glyphicon-play"></span>&nbsp; Play
+                                        </button>
+                                    </a>
+                                </td>
+                                <!-- Displays the favorite button -->
+                                <td>
+                                    <a href="{% url 'music:favorite' song.id %}" class="btn-favorite"><span class="glyphicon glyphicon-star {% if song.is_favorite %}active{% endif %}"></span></a>
+                                </td>
+                                <!-- Displays the delete button -->
+                                <td>
+                                    <form action="{% url 'music:delete_song' song.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="song_id" value="{{ song.id }}" />
+                                        <button type="submit" class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <!-- End of the table rows -->
+                        {% endfor %}
+                        </tbody>
+                        <!-- End of the table body -->
+                    </table>
+                    <!-- End of the table -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

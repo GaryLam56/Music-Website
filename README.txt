@@ -1,1 +1,1 @@
-Django==10b1
+Rudimentary music server on Django

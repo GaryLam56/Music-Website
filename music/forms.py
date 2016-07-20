@@ -31,3 +31,4 @@ class FolderForm(forms.ModelForm):
 
 class UploadSong(forms.Form):
     audio_file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
